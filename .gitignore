@@ -25,4 +25,5 @@ dist-ssr
 
 # Custom Ignore 
 node_modules
-.env
+design
+ui
