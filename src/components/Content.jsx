@@ -2,16 +2,17 @@ import { useContext } from "react";
 import "../styles/Content.scss";
 import Toolbar from "./Toolbar";
 import { DataContext } from "../apis/dataContext";
-import BoardButton from "./BoardButton";
+import Column from "./Column";
 
 const Content = () => {
-  const { board } = useContext(DataContext);
-  const { columns } = { board };
+  const { data, board } = useContext(DataContext);
+  const boardData = data.filter(({ id }) => id === board)[0];
+  const { columns } = boardData;
   return (
     <div className="content">
       <Toolbar />
       {columns.length ? (
-        <BoardButton />
+        <Column />
       ) : (
         <div className="empty-box">
           <p className="heading-l empty-message">
