@@ -6,11 +6,11 @@ import BoardButton from "./BoardButton";
 
 const Content = () => {
   const { board } = useContext(DataContext);
-  const { content } = { board };
+  const { columns } = { board };
   return (
     <div className="content">
       <Toolbar />
-      {content ? (
+      {columns.length ? (
         <BoardButton />
       ) : (
         <div className="empty-box">
