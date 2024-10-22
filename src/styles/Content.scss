@@ -1,0 +1,19 @@
+@import "./colors.scss";
+.content {
+  margin-left: 300px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.empty-message {
+  color: $text-color;
+}
+.empty-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  flex-grow: 1;
+}

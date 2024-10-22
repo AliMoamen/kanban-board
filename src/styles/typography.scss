@@ -1,0 +1,35 @@
+.heading {
+  font-weight: bold;
+}
+.heading-xl {
+  @extend .heading;
+  font-size: 24px;
+  line-height: 30px;
+}
+.heading-l {
+  @extend .heading;
+  font-size: 18px;
+  line-height: 23px;
+}
+.heading-m {
+  @extend .heading;
+  font-size: 15px;
+  line-height: 19px;
+}
+.heading-s {
+  @extend .heading;
+  font-size: 12px;
+  font-kerning: 2.4px;
+  line-height: 15px;
+}
+
+.body-l {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 23px;
+}
+.body-m {
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+}
