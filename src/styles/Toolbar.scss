@@ -1,7 +1,9 @@
 .toolbar {
   background-color: white;
   display: flex;
+  position: fixed;
   padding: 20px 35px;
   align-items: center;
   justify-content: space-between;
+  width: calc(100% - 300px);
 }

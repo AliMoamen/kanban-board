@@ -1,0 +1,11 @@
+.task-box {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba($color: #000000, $alpha: 0.2);
+}
+.task-box:hover {
+  cursor: pointer;
+}

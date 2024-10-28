@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { useState } from "react";
 import { DataContext } from "./apis/dataContext";
 import Content from "./components/Content";
+import Overlay from "./components/Overlay";
 
 function App() {
   const [data, setData] = useState([
@@ -306,8 +307,19 @@ function App() {
     { id: 1, name: "Marketing Plan", columns: [] },
   ]);
   const [board, setBoard] = useState(data[0].id);
+  const [overlay, setOverlay] = useState(null);
   return (
-    <DataContext.Provider value={{ data, setData, board, setBoard }}>
+    <DataContext.Provider
+      value={{
+        data,
+        setData,
+        board,
+        setBoard,
+        overlay,
+        setOverlay,
+      }}
+    >
+      {overlay ? <Overlay>{overlay}</Overlay> : null}
       <Sidebar />
       <Content />
     </DataContext.Provider>

@@ -11,16 +11,22 @@ const Content = () => {
   return (
     <div className="content">
       <Toolbar />
-      {columns.length ? (
-        <Column />
-      ) : (
-        <div className="empty-box">
-          <p className="heading-l empty-message">
-            The board is empty. Create a new column to get started.
-          </p>
-          <button className="button-primary">+ Add New Column</button>
-        </div>
-      )}
+      <div>
+        {columns.length ? (
+          <div className="columns-box">
+            {columns.map(({ name, tasks }, index) => (
+              <Column key={index} name={name} tasks={tasks} />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-box">
+            <p className="heading-l empty-message">
+              The board is empty. Create a new column to get started.
+            </p>
+            <button className="button-primary">+ Add New Column</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -12,14 +12,50 @@ body {
   height: 100%;
 }
 
-.button-primary {
-  background-color: $primary;
+input {
+  padding: 10px 15px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  border-style: solid;
+  border-color: rgba($color: #828fa3, $alpha: 0.25);
+  border-radius: 5px;
+  border-width: 1px;
+  outline-color: $primary;
+  outline-width: 1px;
+  width: 100%;
+}
+input::placeholder {
+  color: $text-color;
+}
+
+.button {
   border: none;
   font-weight: bold;
   border-radius: 20px;
   padding: 12px 20px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+.button-primary {
+  @extend .button;
+  background-color: $primary;
+
   color: white;
 }
 .button-primary:hover {
-  cursor: pointer;
+  background-color: $primary-hover;
+}
+.button-secondary {
+  @extend .button;
+  background-color: rgba($color: $primary, $alpha: 0.1);
+  color: $primary;
+}
+.button-secondary:hover {
+  background-color: rgba($color: $primary, $alpha: 0.25);
+}
+.button-secondary:disabled {
+  background-color: rgba($color: $primary, $alpha: 0.1);
+  opacity: 0.6;
+  cursor: initial;
 }
