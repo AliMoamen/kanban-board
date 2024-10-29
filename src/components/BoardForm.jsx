@@ -1,19 +1,22 @@
 import PropTypes from "prop-types";
 import "../styles/BoardForm.scss";
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import NewItem from "./NewItem";
-
-// Define the context outside the component
-export const ColumnsContext = createContext(null);
-
+import { ItemsContext } from "../apis/ItemsContext";
 const BoardForm = ({ title, submitText }) => {
-  const [columns, setColumns] = useState([]);
+  const id = uuid();
 
+  const [items, setItems] = useState([
+    {
+      id,
+      item: <NewItem key={id} item_id={id} />,
+    },
+  ]);
   const handleNewColumn = () => {
     const new_id = uuid();
-    setColumns([
-      ...columns,
+    setItems([
+      ...items,
       {
         id: new_id,
         item: <NewItem key={new_id} item_id={new_id} />,
@@ -22,18 +25,18 @@ const BoardForm = ({ title, submitText }) => {
   };
 
   return (
-    <div className="board-form">
+    <div className="form">
       <p className="heading-l">{title}</p>
       <p className="body-l text-color">Name</p>
       <input placeholder="eg. Web Design" type="text" />
       <p className="body-l text-color">Columns</p>
-      <ColumnsContext.Provider value={{ columns, setColumns }}>
-        {columns.map(({ item }) => item)}
-      </ColumnsContext.Provider>
+      <ItemsContext.Provider value={{ items, setItems }}>
+        {items.map(({ item }) => item)}
+      </ItemsContext.Provider>
 
       <button
         onClick={handleNewColumn}
-        disabled={columns.length === 7}
+        disabled={items.length === 7}
         className="button-secondary"
       >
         + Add New Column

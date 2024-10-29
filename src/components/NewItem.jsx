@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { ColumnsContext } from "./BoardForm";
+import { ItemsContext } from "../apis/ItemsContext";
 const NewItem = ({ item_id }) => {
-  const { columns, setColumns } = useContext(ColumnsContext); // Fixed spelling here
+  const { items, setItems } = useContext(ItemsContext); // Fixed spelling here
 
   const handleDelete = () => {
-    setColumns(
-      columns.filter(({ id }) => {
+    setItems(
+      items.filter(({ id }) => {
         return id !== item_id;
       })
     );

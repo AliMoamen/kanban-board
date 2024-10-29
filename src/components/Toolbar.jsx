@@ -1,13 +1,19 @@
 import "../styles/Toolbar.scss";
 import { useContext } from "react";
 import { DataContext } from "../apis/dataContext";
+import NewTaskForm from "./NewTaskForm";
 
 const Toolbar = () => {
-  const { data, board } = useContext(DataContext);
+  const { data, board, setOverlay } = useContext(DataContext);
+  const handleNewTask = () => {
+    setOverlay(<NewTaskForm />);
+  };
   return (
     <div className="toolbar">
       <p className="heading-l">{data.find((item) => item.id === board).name}</p>
-      <button className="button-primary">+ Add New Task</button>
+      <button onClick={handleNewTask} className="button-primary">
+        + Add New Task
+      </button>
     </div>
   );
 };

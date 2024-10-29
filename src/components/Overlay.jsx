@@ -9,7 +9,9 @@ const Overlay = ({ children }) => {
   return (
     <>
       <div
-        onClick={() => setOverlay(null)}
+        onClick={() => {
+          setOverlay(null);
+        }}
         className="overlay-background"
       ></div>
       <div className="overlay-content">

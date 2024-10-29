@@ -12,7 +12,18 @@ body {
   height: 100%;
 }
 
-input {
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 450px;
+}
+
+input,
+textarea {
   padding: 10px 15px;
   font-family: "Plus Jakarta Sans", sans-serif;
   border-style: solid;
@@ -25,6 +36,10 @@ input {
 }
 input::placeholder {
   color: $text-color;
+}
+textarea {
+  resize: none;
+  height: 150px;
 }
 
 .button {
