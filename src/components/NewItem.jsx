@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ItemsContext } from "../apis/ItemsContext";
+import "../styles/NewItem.scss";
 const NewItem = ({ item_id }) => {
+  const [hovered, setHovered] = useState(false);
   const { items, setItems } = useContext(ItemsContext); // Fixed spelling here
 
   const handleDelete = () => {
@@ -15,8 +17,20 @@ const NewItem = ({ item_id }) => {
   return (
     <div className="new-item">
       <input type="text" />
-      <button onClick={handleDelete} className="cross-button">
-        <img src="icon-cross.svg" alt="icon-cross.svg" />
+      <button
+        onClick={handleDelete}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="icon-button"
+      >
+        {hovered ? (
+          <img
+            src="icon-cross-destructive.svg"
+            alt="icon-cross-destructive.svg"
+          />
+        ) : (
+          <img src="icon-cross.svg" alt="icon-cross.svg" />
+        )}
       </button>
     </div>
   );

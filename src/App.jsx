@@ -307,7 +307,12 @@ function App() {
   ]);
   const [board, setBoard] = useState(data[0].id);
   const [overlay, setOverlay] = useState(null);
-
+  const getBoardData = (id) => {
+    return data.find((board) => board.id === id);
+  };
+  const getColumns = (id) => {
+    return getBoardData(id).columns.map(({ name }) => name);
+  };
   return (
     <DataContext.Provider
       value={{
@@ -317,6 +322,8 @@ function App() {
         setBoard,
         overlay,
         setOverlay,
+        getBoardData,
+        getColumns,
       }}
     >
       {overlay ? <Overlay>{overlay}</Overlay> : null}

@@ -1,0 +1,12 @@
+.delete-form {
+  gap: 30px;
+  .button-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    button {
+      width: 100%;
+    }
+  }
+}

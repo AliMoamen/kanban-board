@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "../styles/BoardForm.scss";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import NewItem from "./NewItem";

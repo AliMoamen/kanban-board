@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuid } from "uuid";
 import NewItem from "./NewItem";
 import { ItemsContext } from "../apis/ItemsContext";
+import { DataContext } from "../apis/dataContext";
 
 const NewTaskForm = () => {
+  const { board, getColumns } = useContext(DataContext);
   const id = uuid();
-
   const [items, setItems] = useState([
     {
       id,
@@ -40,6 +41,11 @@ const NewTaskForm = () => {
       </button>
 
       <p className="body-l text-color">Status</p>
+      <select>
+        {getColumns(board).map((name, index) => {
+          return <option key={index}>{name}</option>;
+        })}
+      </select>
       <button className="button-primary">Create Task</button>
     </div>
   );
