@@ -3,15 +3,14 @@ import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import NewItem from "./NewItem";
 import { ItemsContext } from "../apis/ItemsContext";
-const BoardForm = ({ title, submitText }) => {
-  const id = uuid();
-
-  const [items, setItems] = useState([
-    {
-      id,
-      item: <NewItem key={id} item_id={id} />,
-    },
-  ]);
+const id = uuid();
+const BoardForm = ({
+  title,
+  boardName = "",
+  boardItems = [{ id, item: <NewItem key={id} item_id={id} /> }],
+  submitText,
+}) => {
+  const [items, setItems] = useState(boardItems);
   const handleNewColumn = () => {
     const new_id = uuid();
     setItems([
@@ -27,7 +26,7 @@ const BoardForm = ({ title, submitText }) => {
     <div className="form">
       <p className="heading-l">{title}</p>
       <p className="body-l text-color">Name</p>
-      <input placeholder="eg. Web Design" type="text" />
+      <input placeholder="eg. Web Design" value={boardName} type="text" />
       <p className="body-l text-color">Columns</p>
       <ItemsContext.Provider value={{ items, setItems }}>
         {items.map(({ item }) => item)}
@@ -44,9 +43,10 @@ const BoardForm = ({ title, submitText }) => {
     </div>
   );
 };
-
 BoardForm.propTypes = {
   title: PropTypes.string.isRequired,
+  boardName: PropTypes.string.isRequired,
+  boardItems: PropTypes.array.isRequired,
   submitText: PropTypes.string.isRequired,
 };
 
