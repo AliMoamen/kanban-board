@@ -3,9 +3,10 @@ import "../styles/Content.scss";
 import Toolbar from "./Toolbar";
 import { DataContext } from "../apis/dataContext";
 import Column from "./Column";
+import BoardForm from "./BoardForm";
 
 const Content = () => {
-  const { getBoardData, board } = useContext(DataContext);
+  const { getBoardData, board, setOverlay } = useContext(DataContext);
   const boardData = getBoardData(board);
   const { columns } = boardData;
   return (
@@ -23,7 +24,20 @@ const Content = () => {
             <p className="heading-l empty-message">
               The board is empty. Create a new column to get started.
             </p>
-            <button className="button-primary">+ Add New Column</button>
+            <button
+              onClick={() =>
+                setOverlay(
+                  <BoardForm
+                    title="Edit Board"
+                    submitText="Save Changes"
+                    boardName={boardData.name}
+                  />
+                )
+              }
+              className="button-primary"
+            >
+              + Add New Column
+            </button>
           </div>
         )}
       </div>
