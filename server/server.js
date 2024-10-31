@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false })); // Parse Income URL encoded re
 app.use(cors()); // Allow to make request from allowed origins
 
 // Routes
-
+app.use("/register", require("./routes/register"));
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
