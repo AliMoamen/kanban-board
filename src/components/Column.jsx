@@ -8,8 +8,15 @@ const Column = ({ name, tasks }) => {
       <p className="body-m text-color">
         {name.toUpperCase()} ({tasks.length})
       </p>
-      {tasks.map(({ title, subtasks }, index) => (
-        <Task key={index} title={title} substasks={subtasks} />
+      {tasks.map(({ id, title, description, status, subtasks }, index) => (
+        <Task
+          key={index}
+          title={title}
+          description={description}
+          status={status}
+          subtasks={subtasks}
+          taskID={id}
+        />
       ))}
     </div>
   );

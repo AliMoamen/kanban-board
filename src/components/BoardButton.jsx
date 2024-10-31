@@ -27,7 +27,7 @@ const BoardButton = ({ name, selected, id }) => {
 BoardButton.propTypes = {
   name: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default BoardButton;

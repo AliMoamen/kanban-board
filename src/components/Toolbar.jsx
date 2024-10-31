@@ -1,7 +1,7 @@
 import "../styles/Toolbar.scss";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../apis/dataContext";
-import NewTaskForm from "./NewTaskForm";
+import TaskForm from "./TaskForm";
 import DeleteForm from "./DeleteForm";
 import { v4 as uuid } from "uuid";
 import NewItem from "./NewItem";
@@ -13,14 +13,11 @@ const Toolbar = () => {
     useContext(DataContext);
   const boardData = getBoardData(board);
   const boardColumns = getColumns(board);
-
-  const handleNewTask = () => {
-    setOverlay(<NewTaskForm />);
-  };
   const handleEditBoard = () => {
-    const id = uuid();
     const boardItems = [];
     boardColumns.forEach((name) => {
+      const id = uuid();
+
       boardItems.push({
         id,
         item: <NewItem key={id} item_id={id} value={name} />,
@@ -44,7 +41,7 @@ const Toolbar = () => {
       <div className="tools-container">
         <button
           disabled={boardColumns.length === 0}
-          onClick={handleNewTask}
+          onClick={() => setOverlay(<TaskForm />)}
           className="button-primary"
         >
           + Add New Task
@@ -63,8 +60,12 @@ const Toolbar = () => {
                 {" "}
                 <p className="body-s text-color">Edit Board</p>
               </button>
-              <button onClick={() => setOverlay(<DeleteForm />)}>
-                <p className="body- destructive">Delete Board</p>
+              <button
+                onClick={() =>
+                  setOverlay(<DeleteForm type="board" name={boardData.name} />)
+                }
+              >
+                <p className="body-ss destructive">Delete Board</p>
               </button>
             </div>
           ) : null}

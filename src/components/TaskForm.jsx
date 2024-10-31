@@ -3,16 +3,24 @@ import { v4 as uuid } from "uuid";
 import NewItem from "./NewItem";
 import { ItemsContext } from "../apis/ItemsContext";
 import { DataContext } from "../apis/dataContext";
+import PropTypes from "prop-types";
+const id = uuid();
 
-const NewTaskForm = () => {
-  const { board, getColumns } = useContext(DataContext);
-  const id = uuid();
-  const [items, setItems] = useState([
+const TaskForm = ({
+  type = "add",
+  title = "",
+  description = "",
+  subtasks = [
     {
       id,
       item: <NewItem key={id} item_id={id} />,
     },
-  ]);
+  ],
+  status = "",
+}) => {
+  const { board, getColumns } = useContext(DataContext);
+  const [items, setItems] = useState(subtasks);
+  console.log(items);
   const handleNewSubtask = () => {
     const new_id = uuid();
     setItems([
@@ -26,11 +34,16 @@ const NewTaskForm = () => {
 
   return (
     <div className="form">
-      <p className="heading-l">Add New Task</p>
+      <p className="heading-l">
+        {type === "add" ? "Add New Task" : "Edit Task"}
+      </p>
       <p className="body-l text-color">Title</p>
-      <input placeholder="e.g. Take Coffee Break" type="text" />
+      <input value={title} placeholder="e.g. Take Coffee Break" type="text" />
       <p className="body-l text-color">Description</p>
-      <textarea placeholder="e.g. It's always good to take a break. This 15-minute break will recharge the batteries a little." />
+      <textarea
+        value={description}
+        placeholder="e.g. It's always good to take a break. This 15-minute break will recharge the batteries a little."
+      />
 
       <p className="body-l text-color">Subtasks</p>
       <ItemsContext.Provider value={{ items, setItems }}>
@@ -43,12 +56,27 @@ const NewTaskForm = () => {
       <p className="body-l text-color">Status</p>
       <select>
         {getColumns(board).map((name, index) => {
-          return <option key={index}>{name}</option>;
+          return (
+            <option
+              selected={
+                status === "" ? index === 0 : status === name ? true : false
+              }
+              key={index}
+            >
+              {name}
+            </option>
+          );
         })}
       </select>
       <button className="button-primary">Create Task</button>
     </div>
   );
 };
-
-export default NewTaskForm;
+TaskForm.propTypes = {
+  type: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  subtasks: PropTypes.array.isRequired,
+  status: PropTypes.string.isRequired,
+};
+export default TaskForm;

@@ -5,8 +5,8 @@ import { DataContext } from "../apis/dataContext";
 import Column from "./Column";
 
 const Content = () => {
-  const { data, board } = useContext(DataContext);
-  const boardData = data.filter(({ id }) => id === board)[0];
+  const { getBoardData, board } = useContext(DataContext);
+  const boardData = getBoardData(board);
   const { columns } = boardData;
   return (
     <div className="content">
