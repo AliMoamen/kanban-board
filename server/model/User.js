@@ -11,6 +11,7 @@ const TaskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
   subtasks: [SubtaskSchema], // Subtasks as an array of subdocuments
+  status: { type: String, required: true },
 });
 
 // Define the Column schema

@@ -17,6 +17,7 @@ app.use(cors()); // Allow to make request from allowed origins
 // Routes
 app.use("/register", require("./routes/register"));
 app.use("/data", require("./routes/data"));
+
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
