@@ -19,10 +19,13 @@ const Sidebar = () => {
       <p className="heading-s">ALL BOARDS ({data.length})</p>
       <div className="board-column">
         {data.map(({ name, id }, index) => {
-          return index === board ? (
-            <BoardButton name={name} selected={true} id={id} key={index} />
-          ) : (
-            <BoardButton name={name} selected={false} id={id} key={index} />
+          return (
+            <BoardButton
+              name={name}
+              selected={id === board}
+              id={id}
+              key={index}
+            />
           );
         })}
         <button onClick={handleNewBoard} className="board-button">

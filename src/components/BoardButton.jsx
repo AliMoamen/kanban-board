@@ -1,22 +1,39 @@
 import "../styles/BoardButton.scss";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContext } from "../apis/dataContext";
 const BoardButton = ({ name, selected, id }) => {
+  const [hovered, setHovered] = useState(false);
   const { setBoard } = useContext(DataContext);
   return (
     <button
-      style={selected ? { backgroundColor: "#635fc7" } : {}}
+      style={
+        selected
+          ? { backgroundColor: "#635fc7" }
+          : hovered
+          ? { backgroundColor: "rgba(99,59,199,0.1)" }
+          : null
+      }
       onClick={() => setBoard(id)}
-      className={selected ? "board-button" : "board-button"}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="board-button"
     >
       <img
-        src={selected ? "/icon-board-white.svg" : "/icon-board.svg"}
+        src={
+          selected
+            ? "/icon-board-white.svg"
+            : hovered
+            ? "/icon-board-primary.svg"
+            : "/icon-board.svg"
+        }
         alt="icon-board.svg"
       />
       <p
         className="heading-s board-name"
-        style={selected ? { color: "white" } : {}}
+        style={
+          selected ? { color: "white" } : hovered ? { color: "#635fc7" } : null
+        }
       >
         {name}
       </p>
