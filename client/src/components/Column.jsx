@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import Task from "./Task";
 import "../styles/Column.scss";
 
-const Column = ({ name, tasks }) => {
+const Column = ({ title, tasks }) => {
   return (
     <div className="column-box">
       <p className="body-m text-color">
-        {name.toUpperCase()} ({tasks.length})
+        {title.toUpperCase()} ({tasks.length})
       </p>
       {tasks.map(({ id, title, description, status, subtasks }, index) => (
         <Task
@@ -23,7 +23,7 @@ const Column = ({ name, tasks }) => {
 };
 
 Column.propTypes = {
-  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   tasks: PropTypes.array.isRequired,
 };
 

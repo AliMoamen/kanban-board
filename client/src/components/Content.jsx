@@ -15,8 +15,8 @@ const Content = () => {
       <div>
         {columns.length ? (
           <div className="columns-box">
-            {columns.map(({ name, tasks }, index) => (
-              <Column key={index} name={name} tasks={tasks} />
+            {columns.map(({ title, tasks }, index) => (
+              <Column key={index} title={title} tasks={tasks} />
             ))}
           </div>
         ) : (
@@ -30,7 +30,7 @@ const Content = () => {
                   <BoardForm
                     title="Edit Board"
                     submitText="Save Changes"
-                    boardName={boardData.name}
+                    boardName={boardData.title}
                   />
                 )
               }

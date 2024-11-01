@@ -18,12 +18,12 @@ const Sidebar = () => {
       </a>
       <p className="heading-s">ALL BOARDS ({data.length})</p>
       <div className="board-column">
-        {data.map(({ name, id }, index) => {
+        {data.map(({ title, _id }, index) => {
           return (
             <BoardButton
-              name={name}
-              selected={id === board}
-              id={id}
+              title={title}
+              selected={_id === board}
+              id={_id}
               key={index}
             />
           );

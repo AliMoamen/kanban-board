@@ -2,7 +2,7 @@ import "../styles/BoardButton.scss";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { DataContext } from "../apis/dataContext";
-const BoardButton = ({ name, selected, id }) => {
+const BoardButton = ({ title, selected, id }) => {
   const [hovered, setHovered] = useState(false);
   const { setBoard } = useContext(DataContext);
   return (
@@ -35,14 +35,14 @@ const BoardButton = ({ name, selected, id }) => {
           selected ? { color: "white" } : hovered ? { color: "#635fc7" } : null
         }
       >
-        {name}
+        {title}
       </p>
     </button>
   );
 };
 
 BoardButton.propTypes = {
-  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
 };

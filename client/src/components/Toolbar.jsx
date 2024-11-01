@@ -9,7 +9,7 @@ import BoardForm from "./BoardForm";
 
 const Toolbar = () => {
   const [actions, setActions] = useState(false);
-  const { data, board, getBoardData, getColumns, setOverlay, overlay } =
+  const { board, getBoardData, getColumns, setOverlay, overlay } =
     useContext(DataContext);
   const boardData = getBoardData(board);
   const boardColumns = getColumns(board);
@@ -37,7 +37,7 @@ const Toolbar = () => {
   }, [board, overlay]);
   return (
     <div className="toolbar">
-      <p className="heading-l">{data.find((item) => item.id === board).name}</p>
+      <p className="heading-l">{boardData.title}</p>
       <div className="tools-container">
         <button
           disabled={boardColumns.length === 0}
@@ -62,7 +62,7 @@ const Toolbar = () => {
               </button>
               <button
                 onClick={() =>
-                  setOverlay(<DeleteForm type="board" name={boardData.name} />)
+                  setOverlay(<DeleteForm type="board" name={boardData.title} />)
                 }
               >
                 <p className="body-ss destructive">Delete Board</p>
