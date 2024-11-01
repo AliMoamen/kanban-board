@@ -8,7 +8,11 @@ const Sidebar = () => {
   const { data, board, setOverlay } = useContext(DataContext);
   const handleNewBoard = () => {
     setOverlay(
-      <BoardForm title={"Add New Board"} submitText={"Create New Board"} />
+      <BoardForm
+        type="add"
+        title={"Add New Board"}
+        submitText={"Create New Board"}
+      />
     );
   };
   return (

@@ -3,17 +3,20 @@ import { useContext, useState } from "react";
 import { DataContext } from "../apis/dataContext";
 
 const BoardForm = ({
+  type,
   title,
   boardName = "",
   boardColumns = [{ title: "", tasks: [] }],
   submitText,
 }) => {
+  const { board } = useContext(DataContext);
   const [columns, setColumns] = useState(boardColumns);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [formData, setFormData] = useState({
     title: boardName,
     columns: boardColumns,
   });
+  console.log(formData);
   const [errors, setErrors] = useState({ title: false, columns: [] });
 
   const { api, user, fetchData, setOverlay, setBoard } =
@@ -57,23 +60,31 @@ const BoardForm = ({
   };
 
   const handleSubmit = async () => {
-    // Validation check before submitting
     const isTitleEmpty = formData.title.trim() === "";
     const areColumnsEmpty = columns.map((col) => col.title.trim() === "");
     setErrors({ title: isTitleEmpty, columns: areColumnsEmpty });
 
-    // Prevent submission if there are errors
     if (isTitleEmpty || areColumnsEmpty.includes(true)) {
       return;
     }
 
     try {
-      await api.post(`/${user}/boards/`, formData);
+      if (type === "add") {
+        await api.post(`/${user}/boards/`, formData);
+      } else if (type === "edit") {
+        await api.put(`/${user}/boards/${board}`, formData);
+      }
       const fetchedData = await fetchData();
       setOverlay(null);
       setBoard(fetchedData[fetchedData.length - 1]._id.toString());
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
     }
   };
 
@@ -85,6 +96,7 @@ const BoardForm = ({
         placeholder="eg. Web Design"
         value={formData.title}
         onChange={handleBoardNameChange}
+        onKeyDown={handleKeyDown} // Trigger submit on Enter key
         type="text"
         style={{
           borderColor: errors.title ? "#ea5555" : undefined,
@@ -95,6 +107,7 @@ const BoardForm = ({
         <div className="new-item" key={index}>
           <input
             onChange={(e) => handleEdit(e, index)}
+            onKeyDown={handleKeyDown} // Trigger submit on Enter key
             type="text"
             value={column.title}
             style={{
@@ -134,6 +147,7 @@ const BoardForm = ({
 };
 
 BoardForm.propTypes = {
+  type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   boardName: PropTypes.string.isRequired,
   boardColumns: PropTypes.array.isRequired,

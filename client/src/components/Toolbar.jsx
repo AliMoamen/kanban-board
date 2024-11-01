@@ -3,8 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../apis/dataContext";
 import TaskForm from "./TaskForm";
 import DeleteForm from "./DeleteForm";
-import { v4 as uuid } from "uuid";
-import NewItem from "./NewItem";
 import BoardForm from "./BoardForm";
 
 const Toolbar = () => {
@@ -13,25 +11,7 @@ const Toolbar = () => {
     useContext(DataContext);
   const boardData = getBoardData(board);
   const boardColumns = getColumns(board);
-  const handleEditBoard = () => {
-    const boardItems = [];
-    boardColumns.forEach((name) => {
-      const id = uuid();
 
-      boardItems.push({
-        id,
-        item: <NewItem key={id} item_id={id} value={name} />,
-      });
-    });
-    setOverlay(
-      <BoardForm
-        title="Edit Board"
-        submitText="Save Changes"
-        boardName={boardData.name}
-        boardItems={boardItems}
-      />
-    );
-  };
   useEffect(() => {
     setActions(false);
   }, [board, overlay]);
@@ -56,7 +36,19 @@ const Toolbar = () => {
           />
           {actions ? (
             <div className="action-box">
-              <button onClick={handleEditBoard}>
+              <button
+                onClick={() => {
+                  setOverlay(
+                    <BoardForm
+                      type="edit"
+                      title="Edit Board"
+                      submitText="Save Changes"
+                      boardName={boardData.title}
+                      boardColumns={boardData.columns}
+                    />
+                  );
+                }}
+              >
                 {" "}
                 <p className="body-s text-color">Edit Board</p>
               </button>

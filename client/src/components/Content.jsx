@@ -9,6 +9,7 @@ const Content = () => {
   const { getBoardData, board, setOverlay } = useContext(DataContext);
   const boardData = getBoardData(board);
   const { columns } = boardData;
+
   return (
     <div className="content">
       <Toolbar />
@@ -28,9 +29,11 @@ const Content = () => {
               onClick={() =>
                 setOverlay(
                   <BoardForm
+                    type="edit"
                     title="Edit Board"
                     submitText="Save Changes"
                     boardName={boardData.title}
+                    boardColumns={boardData.columns}
                   />
                 )
               }
