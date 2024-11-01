@@ -5,6 +5,16 @@ import PropTypes from "prop-types";
 
 const DeleteForm = ({ type, name }) => {
   const { setOverlay } = useContext(DataContext);
+  const { user, api, board, fetchData } = useContext(DataContext);
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/${user}/boards/${board}`);
+      await fetchData();
+      setOverlay(null);
+    } catch (err) {
+      console.error(`Failed to Delete Board: ${err.message}`);
+    }
+  };
   return (
     <div className="delete-form form">
       <p className="heading-l destructive">Delete this {type}?</p>
@@ -14,7 +24,9 @@ const DeleteForm = ({ type, name }) => {
         type === "board" ? "will remove all columns and tasks and" : ""
       } cannot be reversed.`}</p>
       <div className="button-group">
-        <button className="button-destructive">Delete</button>
+        <button onClick={handleDelete} className="button-destructive">
+          Delete
+        </button>
         <button onClick={() => setOverlay(null)} className="button-secondary">
           Cancel
         </button>

@@ -9,20 +9,22 @@ const BoardForm = ({
   submitText,
 }) => {
   const [columns, setColumns] = useState(boardColumns);
-  const [hoveredIndex, setHoveredIndex] = useState(null); // Track the index of the hovered button
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [formData, setFormData] = useState({
     title: boardName,
     columns: boardColumns,
   });
+  const [errors, setErrors] = useState({ title: false, columns: [] });
 
-  const { api, user, fetchData, setOverlay } = useContext(DataContext);
+  const { api, user, fetchData, setOverlay, setBoard } =
+    useContext(DataContext);
 
   const handleNewColumn = () => {
-    // Prevent adding more than 7 columns
     if (columns.length < 7) {
       const updatedColumns = [...columns, { title: "", tasks: [] }];
       setColumns(updatedColumns);
       setFormData({ ...formData, columns: updatedColumns });
+      setErrors({ ...errors, columns: [...errors.columns, false] });
     }
   };
 
@@ -31,6 +33,10 @@ const BoardForm = ({
     updatedColumns.splice(index, 1);
     setColumns(updatedColumns);
     setFormData({ ...formData, columns: updatedColumns });
+
+    const updatedErrors = [...errors.columns];
+    updatedErrors.splice(index, 1);
+    setErrors({ ...errors, columns: updatedErrors });
   };
 
   const handleEdit = (e, index) => {
@@ -38,17 +44,34 @@ const BoardForm = ({
     updatedColumns[index].title = e.target.value;
     setColumns(updatedColumns);
     setFormData({ ...formData, columns: updatedColumns });
+
+    const updatedErrors = [...errors.columns];
+    updatedErrors[index] = e.target.value.trim() === "";
+    setErrors({ ...errors, columns: updatedErrors });
   };
 
   const handleBoardNameChange = (e) => {
-    setFormData({ ...formData, title: e.target.value }); // Update only the title field
+    const title = e.target.value;
+    setFormData({ ...formData, title });
+    setErrors({ ...errors, title: title.trim() === "" });
   };
 
   const handleSubmit = async () => {
+    // Validation check before submitting
+    const isTitleEmpty = formData.title.trim() === "";
+    const areColumnsEmpty = columns.map((col) => col.title.trim() === "");
+    setErrors({ title: isTitleEmpty, columns: areColumnsEmpty });
+
+    // Prevent submission if there are errors
+    if (isTitleEmpty || areColumnsEmpty.includes(true)) {
+      return;
+    }
+
     try {
       await api.post(`/${user}/boards/`, formData);
-      await fetchData();
+      const fetchedData = await fetchData();
       setOverlay(null);
+      setBoard(fetchedData[fetchedData.length - 1]._id.toString());
     } catch (err) {
       console.error(err);
     }
@@ -61,8 +84,11 @@ const BoardForm = ({
       <input
         placeholder="eg. Web Design"
         value={formData.title}
-        onChange={handleBoardNameChange} // Call the new handler
+        onChange={handleBoardNameChange}
         type="text"
+        style={{
+          borderColor: errors.title ? "#ea5555" : undefined,
+        }}
       />
       <p className="body-l text-color">Columns</p>
       {columns.map((column, index) => (
@@ -71,6 +97,9 @@ const BoardForm = ({
             onChange={(e) => handleEdit(e, index)}
             type="text"
             value={column.title}
+            style={{
+              borderColor: errors.columns[index] ? "#ea5555" : undefined,
+            }}
           />
           <button
             onClick={() => handleDelete(index)}

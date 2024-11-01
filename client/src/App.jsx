@@ -41,11 +41,8 @@ function App() {
     try {
       const { data } = await api.get(`/${user}/boards`);
       setData(data);
-      if (data.length > 0) {
-        setBoard(data[data.length - 1]._id.toString());
-      } else {
-        console.warn("No boards available for the user.");
-      }
+      setBoard(data[data.length - 1]._id.toString());
+      return data;
     } catch (err) {
       console.error(`Failed to Fetch Data: ${err.message}`, err);
     }
