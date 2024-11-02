@@ -104,8 +104,8 @@ function App() {
           <SignInForm />
         </Overlay>
       ) : null}
-      <Sidebar />
-      {data.length ? <Content /> : <p>Loading boards...</p>}
+      {user ? <Sidebar /> : null}
+      {data.length ? <Content /> : null}
     </DataContext.Provider>
   );
 }
