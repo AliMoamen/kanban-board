@@ -16,7 +16,6 @@ const BoardForm = ({
     title: boardName,
     columns: boardColumns,
   });
-  console.log(formData);
   const [errors, setErrors] = useState({ title: false, columns: [] });
 
   const { api, user, fetchData, setOverlay, setBoard } =
@@ -109,7 +108,7 @@ const BoardForm = ({
             onChange={(e) => handleEdit(e, index)}
             onKeyDown={handleKeyDown} // Trigger submit on Enter key
             type="text"
-            value={column.title}
+            value={column.title.toUpperCase()}
             style={{
               borderColor: errors.columns[index] ? "#ea5555" : undefined,
             }}

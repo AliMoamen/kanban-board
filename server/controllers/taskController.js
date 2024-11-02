@@ -34,6 +34,7 @@ const addTask = async (req, res) => {
       columnId
     );
     if (error) return res.status(404).json({ message: error });
+    console.log({ title, description, subtasks, status });
 
     column.tasks.push({ title, description, subtasks, status });
     await user.save();
