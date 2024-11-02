@@ -18,7 +18,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <a href="">
-        <img className="logo" src="/logo-dark.svg" alt="logo-light.svg" />
+        <img className="logo" src="/logo-dark.svg" alt="logo-dark.svg" />
       </a>
       <p className="heading-s">ALL BOARDS ({data.length})</p>
       <div className="board-column">

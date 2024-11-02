@@ -4,13 +4,15 @@ import { useContext } from "react";
 import { DataContext } from "../apis/dataContext";
 
 const Overlay = ({ children }) => {
-  const { setOverlay } = useContext(DataContext);
+  const { user, setOverlay } = useContext(DataContext);
 
   return (
     <>
       <div
         onClick={() => {
-          setOverlay(null);
+          if (user) {
+            setOverlay(null);
+          }
         }}
         className="overlay-background"
       ></div>

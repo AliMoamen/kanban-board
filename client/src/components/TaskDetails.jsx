@@ -4,7 +4,6 @@ import { DataContext } from "../apis/dataContext";
 import "../styles/TaskDetails.scss";
 import DeleteForm from "./DeleteForm";
 import TaskForm from "./TaskForm";
-import "../styles/Subtask.scss";
 
 const TaskDetails = ({
   columnID,

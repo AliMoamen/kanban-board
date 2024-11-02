@@ -15,9 +15,11 @@ const getBoards = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await findUserById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
+    let user = await findUserById(userId);
+    if (!user) {
+      await User.create({ uuid: userId });
+    }
+    user = await findUserById(userId);
     res.status(200).json(user.boards);
   } catch (err) {
     console.error(err);

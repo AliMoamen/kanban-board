@@ -4,19 +4,22 @@ import "./styles/colors.scss";
 import Sidebar from "./components/Sidebar";
 import { useEffect, useState } from "react";
 import { DataContext } from "./apis/dataContext";
+
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import Content from "./components/Content";
 import Overlay from "./components/Overlay";
+import SignInForm from "./components/SigninForm";
 
 function App() {
   const api = axios.create({
     baseURL: "http://localhost:3000/data/",
   });
   const [data, setData] = useState([]);
-  const [user, setUser] = useState("aliOsman");
+  const [user, setUser] = useState(null);
   const [board, setBoard] = useState(null);
   const [overlay, setOverlay] = useState(null);
-
+  console.log(user);
   const getBoardData = (boardID) => {
     const board = data.find((board) => board._id.toString() === boardID);
     if (!board) {
@@ -46,18 +49,34 @@ function App() {
     try {
       const { data } = await api.get(`/${user}/boards`);
       setData(data);
-      setBoard(data[data.length - 1]._id.toString());
+      if (data.length) {
+        setBoard(data[data.length - 1]._id.toString());
+      }
       return data;
     } catch (err) {
       console.error(`Failed to Fetch Data: ${err.message}`, err);
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.sub; // Extract user ID from token
+        setUser(userId);
+      } catch (error) {
+        console.error("Invalid token:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
-      await fetchData();
+      if (user) {
+        await fetchData();
+      }
     })();
-  }, []);
+  }, [user]);
 
   return (
     <DataContext.Provider
@@ -78,7 +97,13 @@ function App() {
         fetchData,
       }}
     >
-      {overlay ? <Overlay>{overlay}</Overlay> : null}
+      {overlay ? (
+        <Overlay>{overlay}</Overlay>
+      ) : !user ? (
+        <Overlay>
+          <SignInForm />
+        </Overlay>
+      ) : null}
       <Sidebar />
       {data.length ? <Content /> : <p>Loading boards...</p>}
     </DataContext.Provider>

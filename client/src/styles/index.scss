@@ -40,6 +40,28 @@ body {
     text-align: left;
   }
 }
+.new-item {
+  display: flex;
+  gap: 10px;
+}
+.subtask {
+  background-color: $grey;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 input,
 textarea,
