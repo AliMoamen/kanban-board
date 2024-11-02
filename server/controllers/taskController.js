@@ -49,11 +49,11 @@ const addTask = async (req, res) => {
 const editTask = async (req, res) => {
   const { userId, boardId, columnId, taskId } = req.params;
   const { title, description, subtasks, status } = req.body;
-
   try {
     const user = await findUserById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    // Fetch the board, column, and task
     const { board, column, task, error } = getBoardColumnTask(
       user,
       boardId,
@@ -62,7 +62,29 @@ const editTask = async (req, res) => {
     );
     if (error) return res.status(404).json({ message: error });
 
-    Object.assign(task, { title, description, subtasks, status });
+    // Check if `status` matches `columnId`
+    if (status !== columnId) {
+      // Remove task from current column
+      column.tasks = column.tasks.filter(
+        (task) => task._id.toString() !== taskId
+      );
+
+      // Find the target column where task should be moved
+      const targetColumn = board.columns.find(
+        (col) => col._id.toString() === status
+      );
+      if (!targetColumn) {
+        return res.status(404).json({ message: "Target column not found" });
+      }
+
+      // Add the task to the target column
+      targetColumn.tasks.push({ title, description, subtasks, status });
+    } else {
+      // If status matches, just update the task within the current column
+      Object.assign(task, { title, description, subtasks, status });
+    }
+
+    // Save the changes
     await user.save();
     res.status(200).json({ message: "Task updated successfully", board });
   } catch (err) {

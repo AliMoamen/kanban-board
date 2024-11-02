@@ -17,17 +17,22 @@ function App() {
   const [board, setBoard] = useState(null);
   const [overlay, setOverlay] = useState(null);
 
-  const getBoardData = (id) => {
-    const board = data.find((board) => board._id.toString() === id);
+  const getBoardData = (boardID) => {
+    const board = data.find((board) => board._id.toString() === boardID);
     if (!board) {
-      console.warn(`Board with ID ${id} not found.`);
+      console.warn(`Board with ID ${boardID} not found.`);
     }
     return board;
   };
-
-  const getColumns = (id) => {
-    const boardData = getBoardData(id);
-    return boardData ? boardData.columns.map(({ title }) => title) : [];
+  const getColumnData = (baordID, columnID) => {
+    const boardData = getBoardData(baordID);
+    return boardData.columns.find(
+      (column) => column._id.toString() === columnID
+    );
+  };
+  const getTaskData = (baordID, columnID, taskID) => {
+    const columnData = getColumnData(baordID, columnID);
+    return columnData.tasks.find((task) => task._id.toString() === taskID);
   };
 
   const countCompleted = (subtasks) => {
@@ -66,7 +71,8 @@ function App() {
         overlay,
         setOverlay,
         getBoardData,
-        getColumns,
+        getColumnData,
+        getTaskData,
         countCompleted,
         api,
         fetchData,

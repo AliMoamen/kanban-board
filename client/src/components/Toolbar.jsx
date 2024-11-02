@@ -7,10 +7,8 @@ import BoardForm from "./BoardForm";
 
 const Toolbar = () => {
   const [actions, setActions] = useState(false);
-  const { board, getBoardData, getColumns, setOverlay, overlay } =
-    useContext(DataContext);
+  const { board, getBoardData, setOverlay, overlay } = useContext(DataContext);
   const boardData = getBoardData(board);
-  const boardColumns = getColumns(board);
 
   useEffect(() => {
     setActions(false);
@@ -20,7 +18,7 @@ const Toolbar = () => {
       <p className="heading-l">{boardData.title}</p>
       <div className="tools-container">
         <button
-          disabled={boardColumns.length === 0}
+          disabled={boardData.columns.length === 0}
           onClick={() => setOverlay(<TaskForm />)}
           className="button-primary"
         >

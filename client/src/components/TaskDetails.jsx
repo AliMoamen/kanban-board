@@ -5,8 +5,7 @@ import { DataContext } from "../apis/dataContext";
 import "../styles/TaskDetails.scss";
 import DeleteForm from "./DeleteForm";
 import TaskForm from "./TaskForm";
-import NewItem from "./NewItem";
-import { v4 as uuid } from "uuid";
+
 const TaskDetails = ({
   columnID,
   taskID,
@@ -15,32 +14,28 @@ const TaskDetails = ({
   status,
   subtasks,
 }) => {
-  const { board, getColumns, countCompleted, overlay, setOverlay } =
+  const { board, getBoardData, countCompleted, overlay, setOverlay } =
     useContext(DataContext);
   const [actions, setActions] = useState(false);
-  const columns = getColumns(board);
+  const boardData = getBoardData(board);
   useEffect(() => {
     setActions(false);
   }, [overlay]);
   const handleEditTask = () => {
-    const taskItems = [];
-    subtasks.forEach(({ title }) => {
-      const id = uuid();
-      taskItems.push({
-        id,
-        item: <NewItem key={id} item_id={id} value={title} />,
-      });
-    });
     setOverlay(
       <TaskForm
         type="edit"
         title={title}
         description={description}
-        status={status}
-        subtasks={taskItems}
+        subtasks={subtasks}
+        columnID={columnID}
+        taskID={taskID}
+        submitText="Save Changes"
       />
     );
   };
+  console.log(columnID);
+  console.log(status);
   return (
     <div className="form">
       <div className="title-box">
@@ -87,10 +82,10 @@ const TaskDetails = ({
       })}
       <p className="body-m text-color">Current Status</p>
       <select name="" id="">
-        {columns.map((name, index) => {
+        {boardData.columns.map((column, index) => {
           return (
-            <option selected={status === name} key={index}>
-              {name}
+            <option selected={status === column._id.toString()} key={index}>
+              {column.title.toUpperCase()}
             </option>
           );
         })}

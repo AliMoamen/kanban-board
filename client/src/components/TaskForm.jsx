@@ -8,6 +8,8 @@ const TaskForm = ({
   description = "",
   subtasks = [{ title: "", isCompleted: false }],
   submitText = "Create Task",
+  columnID = null,
+  taskID = null,
 }) => {
   const { api, board, user, getBoardData, fetchData, setOverlay, setBoard } =
     useContext(DataContext);
@@ -19,7 +21,9 @@ const TaskForm = ({
     subtasks,
   });
   const [errors, setErrors] = useState({ title: false, subtasks: [] });
-  const [status, setStatus] = useState(columns[0]._id); // Store column ID initially
+  const [status, setStatus] = useState(
+    type === "add" ? columns[0]._id.toString() : columnID
+  ); // Store column ID initially
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const handleNewSubtask = () => {
@@ -80,8 +84,12 @@ const TaskForm = ({
       };
 
       if (type === "add") {
-        const columnId = status;
-        await api.post(`/${user}/boards/${board}/${columnId}/tasks/`, taskData);
+        await api.post(`/${user}/boards/${board}/${status}/tasks/`, taskData);
+      } else if (type === "edit") {
+        await api.put(
+          `/${user}/boards/${board}/${columnID}/tasks/${taskID}`,
+          taskData
+        );
       }
       // Refresh data or close the form upon successful submission...
       await fetchData();
@@ -161,6 +169,8 @@ const TaskForm = ({
 };
 
 TaskForm.propTypes = {
+  columnID: PropTypes.string.isRequired,
+  taskID: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
