@@ -36,6 +36,13 @@ const TaskForm = ({
     ];
     setFormData({ ...formData, subtasks: updatedSubtasks });
     setErrors({ ...errors, subtasks: [...errors.subtasks, false] });
+
+    // Focus on the new last subtask input
+    setTimeout(() => {
+      if (lastSubtaskRef.current) {
+        lastSubtaskRef.current.focus(); // Focus on the last subtask
+      }
+    }, 0);
   };
 
   const handleDeleteSubtask = (index) => {
@@ -106,9 +113,6 @@ const TaskForm = ({
     if (subtasksContainerRef.current) {
       subtasksContainerRef.current.scrollTop =
         subtasksContainerRef.current.scrollHeight;
-    }
-    if (lastSubtaskRef.current) {
-      lastSubtaskRef.current.focus(); // Focus on the last subtask
     }
   }, [formData.subtasks]);
 

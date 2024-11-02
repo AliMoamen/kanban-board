@@ -70,7 +70,6 @@ function App() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
         const userId = decodedToken.sub;
         setUser(userId);
         setUserInfo({

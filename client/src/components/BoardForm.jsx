@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { DataContext } from "../apis/dataContext";
 
 const BoardForm = ({
@@ -18,15 +18,24 @@ const BoardForm = ({
   });
   const [errors, setErrors] = useState({ title: false, columns: [] });
   const newColumnRef = useRef(null); // Ref for the last added column input
+  const boardTitleRef = useRef(null); // Ref for the board title input
 
   const { api, user, fetchData, setOverlay, setBoard } =
     useContext(DataContext);
+
+  // Focus on the board title input on mount
+  useEffect(() => {
+    if (boardTitleRef.current) {
+      boardTitleRef.current.focus();
+    }
+  }, []);
 
   const handleNewColumn = () => {
     const updatedColumns = [...columns, { title: "", tasks: [] }];
     setColumns(updatedColumns);
     setFormData({ ...formData, columns: updatedColumns });
     setErrors({ ...errors, columns: [...errors.columns, false] });
+
     // Focus the last column input after adding
     setTimeout(() => {
       if (newColumnRef.current) {
@@ -98,6 +107,7 @@ const BoardForm = ({
       <p className="heading-l">{title}</p>
       <p className="body-l text-color">Name</p>
       <input
+        ref={boardTitleRef} // Add ref for the board title input
         placeholder="eg. Web Design"
         value={formData.title}
         onChange={handleBoardNameChange}
