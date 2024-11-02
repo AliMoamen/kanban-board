@@ -24,6 +24,25 @@ const Content = () => {
                 tasks={tasks}
               />
             ))}
+            <div
+              className="add-new-column"
+              onClick={() => {
+                setOverlay(
+                  <BoardForm
+                    type="edit"
+                    title="Edit Board"
+                    submitText="Save Changes"
+                    boardName={boardData.title}
+                    boardColumns={[
+                      ...boardData.columns,
+                      { title: "", tasks: [] },
+                    ]}
+                  />
+                );
+              }}
+            >
+              <p className="heading-l text-color">+ New Column</p>
+            </div>
           </div>
         ) : (
           <div className="empty-box">
@@ -38,7 +57,6 @@ const Content = () => {
                     title="Edit Board"
                     submitText="Save Changes"
                     boardName={boardData.title}
-                    boardColumns={boardData.columns}
                   />
                 )
               }
