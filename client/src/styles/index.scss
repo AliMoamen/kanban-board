@@ -20,6 +20,7 @@ body {
   padding: 20px;
   border-radius: 5px;
   width: 450px;
+  max-height: 650px;
 }
 
 .action-box {
@@ -83,6 +84,7 @@ textarea {
   resize: none;
   height: 150px;
 }
+
 select {
   appearance: none; /* Remove default arrow */
   -webkit-appearance: none; /* For Safari */
@@ -96,10 +98,22 @@ select {
   background-repeat: no-repeat;
   background-position: right 15px center; /* Position arrow on the right */
 }
+
+.items-box {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  max-height: 300px; /* Adjust height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scroll-behavior: smooth; /* Smooth scrolling behavior */
+  padding: 10px;
+}
+
 .icon-button {
   background: none;
   border: none;
 }
+
 .button {
   border: none;
   font-weight: bold;
@@ -142,4 +156,36 @@ button:hover {
 }
 .button-destructive:hover {
   background-color: $destructive-hover;
+}
+
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the vertical scrollbar */
+  height: 12px; /* Height of the horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Thumb color */
+  border-radius: 50%; /* Circular shape for the thumb */
+  height: 30px; /* Height of the circular thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker thumb color on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
+}
+
+/* For Internet Explorer and Edge */
+.scrollable-element {
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* Auto-hide scrollbar for IE */
 }

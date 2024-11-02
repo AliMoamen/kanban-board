@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { DataContext } from "../apis/dataContext";
 import PropTypes from "prop-types";
 
@@ -23,8 +23,11 @@ const TaskForm = ({
   const [errors, setErrors] = useState({ title: false, subtasks: [] });
   const [status, setStatus] = useState(
     type === "add" ? columns[0]._id.toString() : columnID
-  ); // Store column ID initially
+  );
   const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  const subtasksContainerRef = useRef(null); // Ref for the subtasks container
+  const lastSubtaskRef = useRef(null); // Ref for the last subtask input
 
   const handleNewSubtask = () => {
     const updatedSubtasks = [
@@ -77,10 +80,9 @@ const TaskForm = ({
     }
 
     try {
-      // Ensure `status` is included in the task being sent
       const taskData = {
         ...formData,
-        status, // Use the selected status or fallback
+        status,
       };
 
       if (type === "add") {
@@ -91,7 +93,6 @@ const TaskForm = ({
           taskData
         );
       }
-      // Refresh data or close the form upon successful submission...
       await fetchData();
       setOverlay(null);
       setBoard(board);
@@ -99,6 +100,17 @@ const TaskForm = ({
       console.error(err);
     }
   };
+
+  // Effect to scroll to the bottom when subtasks change
+  useEffect(() => {
+    if (subtasksContainerRef.current) {
+      subtasksContainerRef.current.scrollTop =
+        subtasksContainerRef.current.scrollHeight;
+    }
+    if (lastSubtaskRef.current) {
+      lastSubtaskRef.current.focus(); // Focus on the last subtask
+    }
+  }, [formData.subtasks]);
 
   return (
     <div className="form">
@@ -121,33 +133,38 @@ const TaskForm = ({
         onChange={handleDescriptionChange}
       />
       <p className="body-l text-color">Subtasks</p>
-      {formData.subtasks.map((subtask, index) => (
-        <div className="new-item" key={index}>
-          <input
-            placeholder="Subtask name"
-            value={subtask.title}
-            onChange={(e) => handleEditSubtask(e, index)}
-            style={{
-              borderColor: errors.subtasks[index] ? "#ea5555" : undefined,
-            }}
-          />
-          <button
-            onClick={() => handleDeleteSubtask(index)}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            className="icon-button"
-          >
-            {hoveredIndex === index ? (
-              <img
-                src="icon-cross-destructive.svg"
-                alt="icon-cross-destructive.svg"
-              />
-            ) : (
-              <img src="icon-cross.svg" alt="icon-cross.svg" />
-            )}
-          </button>
-        </div>
-      ))}
+      <div className="items-box" ref={subtasksContainerRef}>
+        {formData.subtasks.map((subtask, index) => (
+          <div className="new-item" key={index}>
+            <input
+              ref={
+                index === formData.subtasks.length - 1 ? lastSubtaskRef : null
+              } // Ref for the last subtask input
+              placeholder="Subtask name"
+              value={subtask.title}
+              onChange={(e) => handleEditSubtask(e, index)}
+              style={{
+                borderColor: errors.subtasks[index] ? "#ea5555" : undefined,
+              }}
+            />
+            <button
+              onClick={() => handleDeleteSubtask(index)}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="icon-button"
+            >
+              {hoveredIndex === index ? (
+                <img
+                  src="icon-cross-destructive.svg"
+                  alt="icon-cross-destructive.svg"
+                />
+              ) : (
+                <img src="icon-cross.svg" alt="icon-cross.svg" />
+              )}
+            </button>
+          </div>
+        ))}
+      </div>
 
       <button onClick={handleNewSubtask} className="button-secondary">
         + Add New Subtask

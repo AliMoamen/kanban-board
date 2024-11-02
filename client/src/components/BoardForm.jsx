@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { DataContext } from "../apis/dataContext";
 
 const BoardForm = ({
@@ -17,17 +17,23 @@ const BoardForm = ({
     columns: boardColumns,
   });
   const [errors, setErrors] = useState({ title: false, columns: [] });
+  const newColumnRef = useRef(null); // Ref for the last added column input
 
   const { api, user, fetchData, setOverlay, setBoard } =
     useContext(DataContext);
 
   const handleNewColumn = () => {
-    if (columns.length < 7) {
-      const updatedColumns = [...columns, { title: "", tasks: [] }];
-      setColumns(updatedColumns);
-      setFormData({ ...formData, columns: updatedColumns });
-      setErrors({ ...errors, columns: [...errors.columns, false] });
-    }
+    const updatedColumns = [...columns, { title: "", tasks: [] }];
+    setColumns(updatedColumns);
+    setFormData({ ...formData, columns: updatedColumns });
+    setErrors({ ...errors, columns: [...errors.columns, false] });
+    // Focus the last column input after adding
+    setTimeout(() => {
+      if (newColumnRef.current) {
+        newColumnRef.current.focus();
+        newColumnRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 0);
   };
 
   const handleDelete = (index) => {
@@ -95,47 +101,46 @@ const BoardForm = ({
         placeholder="eg. Web Design"
         value={formData.title}
         onChange={handleBoardNameChange}
-        onKeyDown={handleKeyDown} // Trigger submit on Enter key
+        onKeyDown={handleKeyDown}
         type="text"
         style={{
           borderColor: errors.title ? "#ea5555" : undefined,
         }}
       />
       <p className="body-l text-color">Columns</p>
-      {columns.map((column, index) => (
-        <div className="new-item" key={index}>
-          <input
-            onChange={(e) => handleEdit(e, index)}
-            onKeyDown={handleKeyDown} // Trigger submit on Enter key
-            type="text"
-            value={column.title.toUpperCase()}
-            style={{
-              borderColor: errors.columns[index] ? "#ea5555" : undefined,
-            }}
-          />
-          <button
-            onClick={() => handleDelete(index)}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            className="icon-button"
-          >
-            {hoveredIndex === index ? (
-              <img
-                src="icon-cross-destructive.svg"
-                alt="icon-cross-destructive.svg"
-              />
-            ) : (
-              <img src="icon-cross.svg" alt="icon-cross.svg" />
-            )}
-          </button>
-        </div>
-      ))}
+      <div className="items-box">
+        {columns.map((column, index) => (
+          <div className="new-item" key={index}>
+            <input
+              onChange={(e) => handleEdit(e, index)}
+              onKeyDown={handleKeyDown}
+              type="text"
+              value={column.title.toUpperCase()}
+              style={{
+                borderColor: errors.columns[index] ? "#ea5555" : undefined,
+              }}
+              ref={index === columns.length - 1 ? newColumnRef : null} // Set ref for the last column input
+            />
+            <button
+              onClick={() => handleDelete(index)}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="icon-button"
+            >
+              {hoveredIndex === index ? (
+                <img
+                  src="icon-cross-destructive.svg"
+                  alt="icon-cross-destructive.svg"
+                />
+              ) : (
+                <img src="icon-cross.svg" alt="icon-cross.svg" />
+              )}
+            </button>
+          </div>
+        ))}
+      </div>
 
-      <button
-        onClick={handleNewColumn}
-        disabled={columns.length === 7}
-        className="button-secondary"
-      >
+      <button onClick={handleNewColumn} className="button-secondary">
         + Add New Column
       </button>
       <button onClick={handleSubmit} className="button-primary">
