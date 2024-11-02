@@ -121,6 +121,7 @@ const TaskForm = ({
       <input
         placeholder="e.g. Take Coffee Break"
         value={formData.title}
+        autoFocus
         onChange={handleTitleChange}
         style={{
           borderColor: errors.title ? "#ea5555" : undefined,

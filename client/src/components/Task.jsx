@@ -6,6 +6,7 @@ import TaskDetails from "./TaskDetails";
 
 const Task = ({ columnID, taskID, title, description, status, subtasks }) => {
   const { setOverlay, countCompleted } = useContext(DataContext);
+  const completed = countCompleted(subtasks);
   return (
     <div
       className="task-box"
@@ -22,9 +23,16 @@ const Task = ({ columnID, taskID, title, description, status, subtasks }) => {
         )
       }
     >
-      <p className="heading-m">{title}</p>
+      <p
+        style={{
+          textDecoration: completed === subtasks.length ? "line-through" : null,
+        }}
+        className="heading-m"
+      >
+        {title}
+      </p>
       <p className="body-l text-color">
-        {`${countCompleted(subtasks)} of ${subtasks.length}`} subtasks
+        {`${completed} of ${subtasks.length}`} subtasks
       </p>
     </div>
   );

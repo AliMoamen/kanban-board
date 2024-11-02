@@ -4,8 +4,11 @@ import { DataContext } from "../apis/dataContext";
 import TaskForm from "./TaskForm";
 import DeleteForm from "./DeleteForm";
 import BoardForm from "./BoardForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Toolbar = () => {
+  const { showCompleted, setShowCompleted } = useContext(DataContext);
   const [actions, setActions] = useState(false);
   const { board, getBoardData, setOverlay, overlay } = useContext(DataContext);
   const boardData = getBoardData(board);
@@ -23,6 +26,14 @@ const Toolbar = () => {
           className="button-primary"
         >
           + Add New Task
+        </button>
+        <button className="icon-button">
+          {" "}
+          <FontAwesomeIcon
+            icon={showCompleted ? faEye : faEyeSlash}
+            style={{ color: "#828FA3" }}
+            onClick={() => setShowCompleted(!showCompleted)}
+          />
         </button>
         <button
           onClick={() => setActions(!actions)}

@@ -22,6 +22,7 @@ function App() {
   const [board, setBoard] = useState(null);
   const [overlay, setOverlay] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const getBoardData = (boardID) => {
     const board = data.find((board) => board._id.toString() === boardID);
@@ -105,6 +106,8 @@ function App() {
         setBoard,
         overlay,
         setOverlay,
+        showCompleted,
+        setShowCompleted,
         getBoardData,
         getColumnData,
         getTaskData,
