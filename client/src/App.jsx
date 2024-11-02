@@ -17,6 +17,7 @@ function App() {
   });
   const [data, setData] = useState([]);
   const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [board, setBoard] = useState(null);
   const [overlay, setOverlay] = useState(null);
   console.log(user);
@@ -47,7 +48,8 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const { data } = await api.get(`/${user}/boards`);
+      const params = { ...userInfo }; // Spread userInfo to create query parameters
+      const { data } = await api.get(`/${user}/boards`, { params });
       setData(data);
       if (data.length) {
         setBoard(data[data.length - 1]._id.toString());
@@ -57,13 +59,20 @@ function App() {
       console.error(`Failed to Fetch Data: ${err.message}`, err);
     }
   };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
         const userId = decodedToken.sub; // Extract user ID from token
         setUser(userId);
+        setUserInfo({
+          email: decodedToken.email,
+          name: decodedToken.name,
+          picture: decodedToken.picture,
+        });
       } catch (error) {
         console.error("Invalid token:", error);
       }
@@ -85,6 +94,8 @@ function App() {
         setData,
         user,
         setUser,
+        userInfo,
+        setUserInfo,
         board,
         setBoard,
         overlay,

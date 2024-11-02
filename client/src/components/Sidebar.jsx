@@ -5,7 +5,8 @@ import BoardButton from "./BoardButton";
 import BoardForm from "./BoardForm";
 
 const Sidebar = () => {
-  const { data, board, setOverlay, setUser, setData } = useContext(DataContext);
+  const { data, board, setOverlay, setUser, setData, userInfo } =
+    useContext(DataContext);
   const handleNewBoard = () => {
     setOverlay(
       <BoardForm
@@ -46,10 +47,12 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
-
-      <button onClick={handleLogout} className="button-destructive">
-        Log Out
-      </button>
+      <div className="user-info-box">
+        <p className="heading-s">{userInfo.email}</p>
+        <button onClick={handleLogout} className="button-destructive">
+          Log Out
+        </button>
+      </div>
     </div>
   );
 };

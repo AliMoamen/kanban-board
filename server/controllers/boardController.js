@@ -13,14 +13,15 @@ const getBoardById = (user, boardId) => {
 // Get all boards
 const getBoards = async (req, res) => {
   const { userId } = req.params;
+  const { name, email, picture } = req.query; // Get name and email from query parameters
 
   try {
     let user = await findUserById(userId);
     if (!user) {
-      await User.create({ uuid: userId });
+      await User.create({ uuid: userId, name, email, picture });
     }
-    user = await findUserById(userId);
-    res.status(200).json(user.boards);
+    user = await findUserById(userId); // Fetch the user again to get the updated data
+    res.status(200).json(user.boards); // Respond with the user's boards
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error", error: err.message });

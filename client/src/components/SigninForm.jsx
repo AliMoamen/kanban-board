@@ -6,7 +6,7 @@ import { DataContext } from "../apis/dataContext";
 import "../styles/SigninForm.scss";
 
 const SignInForm = () => {
-  const { setUser } = useContext(DataContext);
+  const { setUser, setUserInfo } = useContext(DataContext);
 
   const handleLoginSuccess = (credentialResponse) => {
     try {
@@ -14,6 +14,12 @@ const SignInForm = () => {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.sub; // Assuming `sub` holds the user ID
       setUser(userId);
+      setUserInfo({
+        email: decodedToken.email,
+        name: decodedToken.name,
+        picture: decodedToken.picture,
+      });
+
       localStorage.setItem("token", token); // Store the entire token in localStorage
     } catch (error) {
       console.error("Failed to decode JWT:", error);

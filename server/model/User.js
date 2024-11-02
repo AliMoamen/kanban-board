@@ -29,6 +29,9 @@ const BoardSchema = new mongoose.Schema({
 // Define the User schema
 const UserSchema = new mongoose.Schema({
   uuid: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  picture: { type: String, required: true },
   boards: [BoardSchema], // Boards as an array of subdocuments
 });
 
