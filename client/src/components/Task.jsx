@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { DataContext } from "../apis/dataContext";
 import TaskDetails from "./TaskDetails";
 
-const Task = ({ taskID, title, description, status, subtasks }) => {
+const Task = ({ columnID, taskID, title, description, status, subtasks }) => {
   const { setOverlay, countCompleted } = useContext(DataContext);
   return (
     <div
@@ -12,6 +12,7 @@ const Task = ({ taskID, title, description, status, subtasks }) => {
       onClick={() =>
         setOverlay(
           <TaskDetails
+            columnID={columnID}
             taskID={taskID}
             title={title}
             description={description}
@@ -30,6 +31,7 @@ const Task = ({ taskID, title, description, status, subtasks }) => {
 };
 
 Task.propTypes = {
+  columnID: PropTypes.string.isRequired,
   taskID: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

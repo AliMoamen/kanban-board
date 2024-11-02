@@ -7,7 +7,14 @@ import DeleteForm from "./DeleteForm";
 import TaskForm from "./TaskForm";
 import NewItem from "./NewItem";
 import { v4 as uuid } from "uuid";
-const TaskDetails = ({ title, description, status, subtasks }) => {
+const TaskDetails = ({
+  columnID,
+  taskID,
+  title,
+  description,
+  status,
+  subtasks,
+}) => {
   const { board, getColumns, countCompleted, overlay, setOverlay } =
     useContext(DataContext);
   const [actions, setActions] = useState(false);
@@ -54,7 +61,14 @@ const TaskDetails = ({ title, description, status, subtasks }) => {
               </button>
               <button
                 onClick={() =>
-                  setOverlay(<DeleteForm type="task" name={title} />)
+                  setOverlay(
+                    <DeleteForm
+                      columnID={columnID}
+                      taskID={taskID}
+                      type="task"
+                      name={title}
+                    />
+                  )
                 }
               >
                 <p className="body-ss destructive">Delete Task</p>
@@ -86,6 +100,7 @@ const TaskDetails = ({ title, description, status, subtasks }) => {
 };
 
 TaskDetails.propTypes = {
+  columnID: PropTypes.string.isRequired,
   taskID: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

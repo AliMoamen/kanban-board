@@ -16,8 +16,13 @@ const Content = () => {
       <div>
         {columns.length ? (
           <div className="columns-box">
-            {columns.map(({ title, tasks }, index) => (
-              <Column key={index} title={title} tasks={tasks} />
+            {columns.map(({ _id, title, tasks }, index) => (
+              <Column
+                key={index}
+                columnID={_id.toString()}
+                title={title}
+                tasks={tasks}
+              />
             ))}
           </div>
         ) : (

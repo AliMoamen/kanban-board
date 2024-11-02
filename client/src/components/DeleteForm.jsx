@@ -3,12 +3,23 @@ import { DataContext } from "../apis/dataContext";
 import "../styles/DeleteForm.scss";
 import PropTypes from "prop-types";
 
-const DeleteForm = ({ type, name }) => {
+const DeleteForm = ({
+  columnID = null,
+  taskID = null,
+  type = "board",
+  name,
+}) => {
   const { setOverlay } = useContext(DataContext);
   const { user, api, board, fetchData } = useContext(DataContext);
   const handleDelete = async () => {
     try {
-      await api.delete(`/${user}/boards/${board}`);
+      if (type === "board") {
+        await api.delete(`/${user}/boards/${board}`);
+      } else if (type === "task") {
+        await api.delete(
+          `/${user}/boards/${board}/${columnID}/tasks/${taskID}`
+        );
+      }
       await fetchData();
       setOverlay(null);
     } catch (err) {
@@ -35,7 +46,9 @@ const DeleteForm = ({ type, name }) => {
   );
 };
 DeleteForm.propTypes = {
-  type: PropTypes.string.isRequired,
+  columnID: PropTypes.string,
+  taskID: PropTypes.string,
+  type: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
 export default DeleteForm;
