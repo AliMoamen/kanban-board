@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import Content from "./components/Content";
 import Overlay from "./components/Overlay";
 import SignInForm from "./components/SigninForm";
-import Spinner from "./components/Spinner"; // Import the Spinner component
+import Spinner from "./components/Spinner";
 
 function App() {
   // Create an axios instance with a base URL for API requests
