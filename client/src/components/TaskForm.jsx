@@ -11,6 +11,7 @@ const TaskForm = ({
   columnID = null,
   taskID = null,
 }) => {
+  // Destructure necessary values from DataContext
   const { api, board, user, getBoardData, fetchData, setOverlay, setBoard } =
     useContext(DataContext);
   const boardData = getBoardData(board);
@@ -19,16 +20,17 @@ const TaskForm = ({
     title,
     description,
     subtasks,
-  });
-  const [errors, setErrors] = useState({ title: false, subtasks: [] });
+  }); // State to manage form data
+  const [errors, setErrors] = useState({ title: false, subtasks: [] }); // State to manage form errors
   const [status, setStatus] = useState(
     type === "add" ? columns[0]._id.toString() : columnID
-  );
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  ); // State to manage task status
+  const [hoveredIndex, setHoveredIndex] = useState(null); // State to manage hovered index for delete button
 
   const subtasksContainerRef = useRef(null); // Ref for the subtasks container
   const lastSubtaskRef = useRef(null); // Ref for the last subtask input
 
+  // Function to handle adding a new subtask
   const handleNewSubtask = () => {
     const updatedSubtasks = [
       ...formData.subtasks,
@@ -45,6 +47,7 @@ const TaskForm = ({
     }, 0);
   };
 
+  // Function to handle deleting a subtask
   const handleDeleteSubtask = (index) => {
     const updatedSubtasks = [...formData.subtasks];
     updatedSubtasks.splice(index, 1);
@@ -55,6 +58,7 @@ const TaskForm = ({
     setErrors({ ...errors, subtasks: updatedErrors });
   };
 
+  // Function to handle editing a subtask title
   const handleEditSubtask = (e, index) => {
     const updatedSubtasks = [...formData.subtasks];
     updatedSubtasks[index].title = e.target.value;
@@ -65,16 +69,19 @@ const TaskForm = ({
     setErrors({ ...errors, subtasks: updatedErrors });
   };
 
+  // Function to handle changing the task title
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;
     setFormData({ ...formData, title: newTitle });
     setErrors({ ...errors, title: newTitle.trim() === "" });
   };
 
+  // Function to handle changing the task description
   const handleDescriptionChange = (e) => {
     setFormData({ ...formData, description: e.target.value });
   };
 
+  // Function to handle form submission
   const handleSubmit = async () => {
     const isTitleEmpty = formData.title.trim() === "";
     const areSubtasksEmpty = formData.subtasks.map(

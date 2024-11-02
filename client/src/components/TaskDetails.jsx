@@ -15,19 +15,20 @@ const TaskDetails = ({
 }) => {
   const { board, setBoard, getBoardData, setOverlay, user, api, fetchData } =
     useContext(DataContext);
-  const [actions, setActions] = useState(false);
+  const [actions, setActions] = useState(false); // State to manage the visibility of action buttons
   const [taskData, setTaskData] = useState({
     title,
     description,
     status,
     subtasks,
-  });
-  const boardData = getBoardData(board);
+  }); // State to manage task data
+  const boardData = getBoardData(board); // Get the current board data
 
   // Calculate completed subtasks dynamically
   const countCompleted = () =>
     taskData.subtasks.filter((subtask) => subtask.isCompleted).length;
 
+  // Function to handle editing the task
   const handleEditTask = () => {
     setOverlay(
       <TaskForm
@@ -59,6 +60,7 @@ const TaskDetails = ({
     );
   };
 
+  // Function to toggle the completion status of a subtask
   const toggleSubtaskCompletion = (index) => {
     setTaskData((prevData) => {
       const updatedSubtasks = prevData.subtasks.map((subtask, i) =>
@@ -163,10 +165,8 @@ const TaskDetails = ({
             await fetchData(); // Refresh data after updating
             setOverlay(null);
             setBoard(board);
-            // Optional: Provide feedback to the user on successful save
           } catch (error) {
             console.error("Error saving task:", error);
-            // Optional: Show an error message to the user
           }
         }}
       >

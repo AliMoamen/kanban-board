@@ -11,21 +11,24 @@ const DeleteForm = ({
 }) => {
   const { setOverlay } = useContext(DataContext);
   const { user, api, board, fetchData } = useContext(DataContext);
+
+  // Function to handle deletion of board or task
   const handleDelete = async () => {
     try {
       if (type === "board") {
-        await api.delete(`/${user}/boards/${board}`);
+        await api.delete(`/${user}/boards/${board}`); // Delete board
       } else if (type === "task") {
         await api.delete(
-          `/${user}/boards/${board}/${columnID}/tasks/${taskID}`
+          `/${user}/boards/${board}/${columnID}/tasks/${taskID}` // Delete task
         );
       }
-      await fetchData();
-      setOverlay(null);
+      await fetchData(); // Fetch updated data
+      setOverlay(null); // Close the overlay
     } catch (err) {
       console.error(`Failed to Delete Board: ${err.message}`);
     }
   };
+
   return (
     <div className="delete-form form">
       <p className="heading-l destructive">Delete this {type}?</p>
@@ -45,10 +48,12 @@ const DeleteForm = ({
     </div>
   );
 };
+
 DeleteForm.propTypes = {
   columnID: PropTypes.string,
   taskID: PropTypes.string,
   type: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
+
 export default DeleteForm;

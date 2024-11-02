@@ -9,14 +9,15 @@ const BoardForm = ({
   boardColumns = [{ title: "", tasks: [] }],
   submitText,
 }) => {
+  // Destructure necessary values from DataContext
   const { board } = useContext(DataContext);
-  const [columns, setColumns] = useState(boardColumns);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [columns, setColumns] = useState(boardColumns); // State to manage columns
+  const [hoveredIndex, setHoveredIndex] = useState(null); // State to manage hovered index for delete button
   const [formData, setFormData] = useState({
     title: boardName,
     columns: boardColumns,
-  });
-  const [errors, setErrors] = useState({ title: false, columns: [] });
+  }); // State to manage form data
+  const [errors, setErrors] = useState({ title: false, columns: [] }); // State to manage form errors
   const newColumnRef = useRef(null); // Ref for the last added column input
   const boardTitleRef = useRef(null); // Ref for the board title input
 
@@ -30,6 +31,7 @@ const BoardForm = ({
     }
   }, []);
 
+  // Function to handle adding a new column
   const handleNewColumn = () => {
     const updatedColumns = [...columns, { title: "", tasks: [] }];
     setColumns(updatedColumns);
@@ -45,6 +47,7 @@ const BoardForm = ({
     }, 0);
   };
 
+  // Function to handle deleting a column
   const handleDelete = (index) => {
     const updatedColumns = [...columns];
     updatedColumns.splice(index, 1);
@@ -56,6 +59,7 @@ const BoardForm = ({
     setErrors({ ...errors, columns: updatedErrors });
   };
 
+  // Function to handle editing a column title
   const handleEdit = (e, index) => {
     const updatedColumns = [...columns];
     updatedColumns[index].title = e.target.value;
@@ -67,12 +71,14 @@ const BoardForm = ({
     setErrors({ ...errors, columns: updatedErrors });
   };
 
+  // Function to handle changing the board name
   const handleBoardNameChange = (e) => {
     const title = e.target.value;
     setFormData({ ...formData, title });
     setErrors({ ...errors, title: title.trim() === "" });
   };
 
+  // Function to handle form submission
   const handleSubmit = async () => {
     const isTitleEmpty = formData.title.trim() === "";
     const areColumnsEmpty = columns.map((col) => col.title.trim() === "");
@@ -96,6 +102,7 @@ const BoardForm = ({
     }
   };
 
+  // Function to handle key down events
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSubmit();

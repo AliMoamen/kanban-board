@@ -1,4 +1,3 @@
-// src/components/SignInForm.js
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useContext } from "react";
@@ -8,6 +7,7 @@ import "../styles/SigninForm.scss";
 const SignInForm = () => {
   const { setUser, setUserInfo } = useContext(DataContext);
 
+  // Function to handle successful login
   const handleLoginSuccess = (credentialResponse) => {
     try {
       const token = credentialResponse.credential;

@@ -6,7 +6,8 @@ import TaskDetails from "./TaskDetails";
 
 const Task = ({ columnID, taskID, title, description, status, subtasks }) => {
   const { setOverlay, countCompleted } = useContext(DataContext);
-  const completed = countCompleted(subtasks);
+  const completed = countCompleted(subtasks); // Calculate the number of completed subtasks
+
   return (
     <div
       className="task-box"

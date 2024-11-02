@@ -6,16 +6,18 @@ import Column from "./Column";
 import BoardForm from "./BoardForm";
 
 const Content = () => {
+  // Destructure necessary values from DataContext
   const { getBoardData, board, setOverlay } = useContext(DataContext);
-  const boardData = getBoardData(board);
-  const { columns } = boardData;
+  const boardData = getBoardData(board); // Get the current board data
+  const { columns } = boardData; // Destructure columns from board data
 
   return (
     <div className="content">
-      <Toolbar />
+      <Toolbar /> {/* Render the Toolbar component */}
       <div>
         {columns.length ? (
           <div className="columns-box">
+            {/* Map through the columns to display each column */}
             {columns.map(({ _id, title, tasks }, index) => (
               <Column
                 key={index}
@@ -24,6 +26,7 @@ const Content = () => {
                 tasks={tasks}
               />
             ))}
+            {/* Button to add a new column */}
             <div
               className="add-new-column"
               onClick={() => {
@@ -49,6 +52,7 @@ const Content = () => {
             <p className="heading-l empty-message">
               The board is empty. Create a new column to get started.
             </p>
+            {/* Button to add a new column when the board is empty */}
             <button
               onClick={() =>
                 setOverlay(
