@@ -1,4 +1,4 @@
-const User = require("../model/User");
+const User = require("../model/User"); // Import the User model
 
 // Helper function to find a user by ID
 const findUserById = async (userId) => {
@@ -7,51 +7,51 @@ const findUserById = async (userId) => {
 
 // Helper function to get board, column, and task by ID
 const getBoardColumnTask = (user, boardId, columnId, taskId = null) => {
-  const board = user.boards.id(boardId);
-  if (!board) return { error: "Board not found" };
+  const board = user.boards.id(boardId); // Get the board by ID
+  if (!board) return { error: "Board not found" }; // Return error if board not found
 
-  const column = board.columns.id(columnId);
-  if (!column) return { error: "Column not found" };
+  const column = board.columns.id(columnId); // Get the column by ID
+  if (!column) return { error: "Column not found" }; // Return error if column not found
 
-  const task = taskId ? column.tasks.id(taskId) : null;
-  if (taskId && !task) return { error: "Task not found" };
+  const task = taskId ? column.tasks.id(taskId) : null; // Get the task by ID if taskId is provided
+  if (taskId && !task) return { error: "Task not found" }; // Return error if task not found
 
-  return { board, column, task };
+  return { board, column, task }; // Return the board, column, and task
 };
 
 // Controller to add a new task
 const addTask = async (req, res) => {
-  const { userId, boardId, columnId } = req.params;
-  const { title, description, subtasks, status } = req.body;
+  const { userId, boardId, columnId } = req.params; // Extract userId, boardId, and columnId from request parameters
+  const { title, description, subtasks, status } = req.body; // Extract title, description, subtasks, and status from request body
 
   try {
-    const user = await findUserById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = await findUserById(userId); // Find user by UUID
+    if (!user) return res.status(404).json({ message: "User not found" }); // If user not found, respond with 404
 
     const { board, column, error } = getBoardColumnTask(
       user,
       boardId,
       columnId
-    );
-    if (error) return res.status(404).json({ message: error });
-    console.log({ title, description, subtasks, status });
+    ); // Get the board and column
+    if (error) return res.status(404).json({ message: error }); // If error, respond with 404
 
-    column.tasks.push({ title, description, subtasks, status });
-    await user.save();
-    res.status(200).json({ message: "Task added successfully", board });
+    column.tasks.push({ title, description, subtasks, status }); // Add the new task to the column's tasks array
+    await user.save(); // Save the user document
+    res.status(200).json({ message: "Task added successfully", board }); // Respond with success message and the updated board
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ message: "Server error", error: err.message }); // Handle server error
   }
 };
 
 // Controller to edit an existing task
 const editTask = async (req, res) => {
-  const { userId, boardId, columnId, taskId } = req.params;
-  const { title, description, subtasks, status } = req.body;
+  const { userId, boardId, columnId, taskId } = req.params; // Extract userId, boardId, columnId, and taskId from request parameters
+  const { title, description, subtasks, status } = req.body; // Extract title, description, subtasks, and status from request body
+
   try {
-    const user = await findUserById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = await findUserById(userId); // Find user by UUID
+    if (!user) return res.status(404).json({ message: "User not found" }); // If user not found, respond with 404
 
     // Fetch the board, column, and task
     const { board, column, task, error } = getBoardColumnTask(
@@ -60,7 +60,7 @@ const editTask = async (req, res) => {
       columnId,
       taskId
     );
-    if (error) return res.status(404).json({ message: error });
+    if (error) return res.status(404).json({ message: error }); // If error, respond with 404
 
     // Check if `status` matches `columnId`
     if (status !== columnId) {
@@ -74,7 +74,7 @@ const editTask = async (req, res) => {
         (col) => col._id.toString() === status
       );
       if (!targetColumn) {
-        return res.status(404).json({ message: "Target column not found" });
+        return res.status(404).json({ message: "Target column not found" }); // If target column not found, respond with 404
       }
 
       // Add the task to the target column
@@ -86,34 +86,34 @@ const editTask = async (req, res) => {
 
     // Save the changes
     await user.save();
-    res.status(200).json({ message: "Task updated successfully", board });
+    res.status(200).json({ message: "Task updated successfully", board }); // Respond with success message and the updated board
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ message: "Server error", error: err.message }); // Handle server error
   }
 };
 
 // Controller to delete an existing task
 const deleteTask = async (req, res) => {
-  const { userId, boardId, columnId, taskId } = req.params;
+  const { userId, boardId, columnId, taskId } = req.params; // Extract userId, boardId, columnId, and taskId from request parameters
 
   try {
-    const user = await findUserById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = await findUserById(userId); // Find user by UUID
+    if (!user) return res.status(404).json({ message: "User not found" }); // If user not found, respond with 404
 
     const { board, column, error } = getBoardColumnTask(
       user,
       boardId,
       columnId
-    );
-    if (error) return res.status(404).json({ message: error });
+    ); // Get the board and column
+    if (error) return res.status(404).json({ message: error }); // If error, respond with 404
 
-    column.tasks.pull({ _id: taskId });
-    await user.save();
-    res.status(200).json({ message: "Task deleted successfully" });
+    column.tasks.pull({ _id: taskId }); // Remove the task from the column's tasks array
+    await user.save(); // Save the user document
+    res.status(200).json({ message: "Task deleted successfully" }); // Respond with success message
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ message: "Server error", error: err.message }); // Handle server error
   }
 };
 

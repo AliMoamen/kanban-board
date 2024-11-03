@@ -14,13 +14,14 @@ router
   .put(boardController.editBoard) // Edit a specific board
   .delete(boardController.deleteBoard); // Delete a specific board
 
+// Routes for handling tasks within a specific column of a board
 router
   .route("/:userId/boards/:boardId/:columnId/tasks")
-  .post(taskController.addTask);
+  .post(taskController.addTask); // Add a new task to a specific column
 
 router
   .route("/:userId/boards/:boardId/:columnId/tasks/:taskId")
-  .put(taskController.editTask)
-  .delete(taskController.deleteTask);
+  .put(taskController.editTask) // Edit a specific task
+  .delete(taskController.deleteTask); // Delete a specific task
 
 module.exports = router;

@@ -1,24 +1,24 @@
-require("dotenv").config(); // Access Environment Variables
-const express = require("express");
-const cors = require("cors");
-const connectDB = require("./config/dbConn");
-const mongoose = require("mongoose");
-const app = express();
-const PORT = process.env.PORT || 3000;
+require("dotenv").config(); // Load environment variables from a .env file into process.env
+const express = require("express"); // Import the Express framework
+const cors = require("cors"); // Import the CORS middleware
+const connectDB = require("./config/dbConn"); // Import the database connection function
+const mongoose = require("mongoose"); // Import Mongoose for MongoDB interaction
+const app = express(); // Create an Express application
+const PORT = process.env.PORT || 3000; // Define the port number, default to 3000 if not specified in environment variables
 
 // Connect to MongoDB
-connectDB();
+connectDB(); // Establish a connection to the MongoDB database
 
 // Middleware
-app.use(express.json()); // Parse Incoming JSON data
-app.use(express.urlencoded({ extended: false })); // Parse Income URL encoded requests
-app.use(cors()); // Allow to make request from allowed origins
+app.use(express.json()); // Middleware to parse incoming JSON data
+app.use(express.urlencoded({ extended: false })); // Middleware to parse incoming URL-encoded data
+app.use(cors()); // Middleware to enable Cross-Origin Resource Sharing (CORS)
 
 // Routes
-app.use("/register", require("./routes/register"));
-app.use("/data", require("./routes/data"));
+app.use("/data", require("./routes/data")); // Define the route for handling data-related requests
 
+// Event listener for successful MongoDB connection
 mongoose.connection.once("open", () => {
-  console.log("Connected to MongoDB");
-  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+  console.log("Connected to MongoDB"); // Log a message when connected to MongoDB
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)); // Start the server and listen on the specified port
 });
