@@ -47,7 +47,7 @@ The backend is built using Express and is located in the `server` directory. Her
 
 ### Installation
 
-Before installation, make sure you have the terminal opened on the project folder. Here are the commands that you need to execute on the terminal:
+Before installation, make sure you have Node.js installed and the terminal opened on the project folder. Here are the commands that you need to execute on the terminal:
 
 1. Install the dependencies:
 
