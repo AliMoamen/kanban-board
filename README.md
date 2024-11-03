@@ -65,4 +65,4 @@ After executing these commands, open your browser and navigate to `http://localh
 
 ## Demo
 
-You can find the link of the demo [here](https://www.loom.com/share/064525aff05e496b99d4886d393c47cf?sid=4080f40e-9146-4937-a985-4ff5d1c00b71)
+You can find the link of the demo [here](https://www.loom.com/share/064525aff05e496b99d4886d393c47cf?sid=4080f40e-9146-4937-a985-4ff5d1c00b71).

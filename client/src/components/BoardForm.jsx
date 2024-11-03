@@ -170,8 +170,8 @@ const BoardForm = ({
 BoardForm.propTypes = {
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  boardName: PropTypes.string.isRequired,
-  boardColumns: PropTypes.array.isRequired,
+  boardName: PropTypes.string,
+  boardColumns: PropTypes.array,
   submitText: PropTypes.string.isRequired,
 };
 

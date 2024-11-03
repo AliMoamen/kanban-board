@@ -198,13 +198,13 @@ const TaskForm = ({
 };
 
 TaskForm.propTypes = {
-  columnID: PropTypes.string.isRequired,
-  taskID: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  subtasks: PropTypes.array.isRequired,
-  submitText: PropTypes.string.isRequired,
+  columnID: PropTypes.string,
+  taskID: PropTypes.string,
+  type: PropTypes.string,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  subtasks: PropTypes.array,
+  submitText: PropTypes.string,
 };
 
 export default TaskForm;
