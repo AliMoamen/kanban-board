@@ -47,6 +47,8 @@ The backend is built using Express and is located in the `server` directory. Her
 
 ### Installation
 
+Before installation, make sure you have the terminal opened on the project folder. Here are the commands that you need to execute on the terminal:
+
 1. Install the dependencies:
 
 ```bash
@@ -59,7 +61,7 @@ npm install
 npm start
 ```
 
-3. Open your browser and navigate to `http://localhost:5000`.
+After executing these commands, open your browser and navigate to `http://localhost:5000`.
 
 ## Demo
 
